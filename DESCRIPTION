@@ -1,0 +1,20 @@
+Package: farmr
+Type: Package
+Title: Automate Workflow Setup
+Version: 0.1.0
+Author: Maxwell Salvatore
+Maintainer: Maxwell Salvatore <mmsalva@umich.edu>
+Description: Helpful functions I've created to automate project setup, 
+    create reproducible code, and track thoughts.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports:
+    readr,
+    dplyr,
+    stringr,
+    glue,
+    here,
+    renv,
+    usethis
+RoxygenNote: 7.1.1
