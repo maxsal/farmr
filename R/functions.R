@@ -183,7 +183,6 @@ biblioteca <- function(x, ...) {
 theme_farmr <- function() {
   ggplot2::theme_minimal() +
     ggplot2::theme(
-      theme(
         text               = element_text(family = "Lato"),
         plot.title         = ggtext::element_markdown(size = 18, face = "bold"),
         plot.subtitle      = element_text(size = 14, color = "#36454f"),
@@ -195,6 +194,5 @@ theme_farmr <- function() {
         panel.grid.major.y = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.minor.y = element_blank()
-      )
     )
 }
