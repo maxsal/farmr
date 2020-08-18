@@ -6,7 +6,7 @@ Author: Maxwell Salvatore
 Maintainer: Maxwell Salvatore <mmsalva@umich.edu>
 Description: Helpful functions I've created to automate project setup, 
     create reproducible code, and track thoughts.
-License: What license is it under?
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -16,6 +16,7 @@ Imports:
     glue,
     here,
     renv,
+    tibble,
     usethis
 RoxygenNote: 7.1.1
 URL: https://github.com/maxsal/farmr
