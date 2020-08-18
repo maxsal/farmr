@@ -7,15 +7,21 @@
 #' .Rprof file)
 #' @return Opens a new RStudio session with the newly created project
 #' @export
-plant_seed <- function(project_name = NULL) {
+plant_seed <- function(project_name = NULL, path = NULL) {
+
+  if (!is.null(path)) {
+    p <- path
+  } else {
+    p <- getwd()
+  }
 
   if (is.null(project_name)) {
-    p_name <- stringr::str_extract(getwd(), "([^/]+$)")
-    base   <- stringr::str_extract(getwd(), "(.*)/")
+    p_name <- stringr::str_extract(p, "([^/]+$)")
+    base   <- stringr::str_extract(p, "(.*)/")
     p_path <- glue::glue("{base}{p_name}")
   } else {
     p_name <- project_name
-    base   <- glue::glue("{getwd()}/")
+    base   <- glue::glue("{p}/")
     p_path <- glue::glue("{base}{p_name}")
     dir.create(p_path, showWarnings = FALSE)
   }
@@ -87,12 +93,7 @@ plant_seed <- function(project_name = NULL) {
       "    renv::init()",
       "    suppressMessages(renv::install(c('tidyverse', 'usethis', 'here', 'gert', 'devtools')))",
       "    devtools::install('~/Documents/projects/farmr/')",
-      # "    usethis::use_git()",
-      # "    usethis::use_github()",
       "  } else {",
-      # "    list.of.packages <- c('renv', 'tidyverse', 'here', 'glue', 'usethis')",
-      # "    new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[, 'Package'])]",
-      # "    if(length(new.packages)) renv::install(new.packages)",
       "    suppressMessages(library('tidyverse'))",
       "    suppressMessages(library('here'))",
       "    suppressMessages(library('glue'))",
@@ -122,13 +123,14 @@ dear_diary <- function(entry) {
   new_id <- max(tmp_diary$entry_id) + 1
 
   readr::write_rds(tmp_diary %>%
-              add_row(
-                "entry_id"   = new_id,
-                "entry_date" = Sys.Date(),
-                "entry_time" = format(Sys.time(), "%H:%M"),
-                "entry"      = entry,
-              ),
-            here::here("diary.rds")
+                     tibble::add_row(
+                       "entry_id"   = new_id,
+                       "entry_date" = Sys.Date(),
+                       "entry_time" = format(Sys.time(), "%H:%M"),
+                       "entry"      = entry,
+                     ) %>%
+                     dplyr::arrange(desc(id)),
+                   here::here("diary.rds")
   )
 
   print(glue::glue("Entry {new_id} recorded!!!"))
@@ -144,32 +146,34 @@ read_diary <- function(id = NULL, date = NULL) {
       dplyr::filter(entry_id == id)
   } else if (!is.null(date)) {
     readr::read_rds(here::here("diary.rds")) %>%
-      dplyr::filter(entry_date == date)
+      dplyr::filter(entry_date == date) %>%
+      dplyr::arrange(desc(id))
   } else {
-    readr::read_rds(here::here("diary.rds"))
+    readr::read_rds(here::here("diary.rds")) %>%
+      dplyr::arrange(desc(id))
   }
 
 }
 
-# library card ----------
+# biblioteca ----------
 #' @export
-library_card <- function() {
+biblioteca <- function(x, ...) {
 
-  list_of_packages <- c('renv', 'tidyverse', 'here', 'glue', 'devtools')
-  new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[, 'Package'])]
-  if (length(new_packages)) {
-    renv::install(new_packages)
-  } else {
-    print(glue::glue("Books already checked out"))
+  packages <- c(x, ...)
+
+  for (package in packages) {
+
+    if (package %in% rownames(installed.packages())) {
+
+      do.call("library", list(package))
+
+    } else {
+
+      install.packages(package)
+      do.call("library", list(package))
+
+    }
+
   }
-
-}
-
-# get git ----------
-#' @export
-get_git <- function() {
-
-  usethis::use_git()
-  usethis::use_github()
 
 }
