@@ -12,6 +12,8 @@ LazyData: true
 Imports:
     readr,
     dplyr,
+    ggplot2,
+    ggtext,
     stringr,
     glue,
     here,

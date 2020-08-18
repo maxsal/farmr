@@ -177,3 +177,24 @@ biblioteca <- function(x, ...) {
   }
 
 }
+
+# ggplot theme for farmr ----------
+#' @export
+theme_farmr <- function() {
+  ggplot2::theme_minimal() +
+    ggplot2::theme(
+      theme(
+        text               = element_text(family = "Lato"),
+        plot.title         = ggtext::element_markdown(size = 18, face = "bold"),
+        plot.subtitle      = element_text(size = 14, color = "#36454f"),
+        plot.caption       = ggtext::element_markdown(hjust = 0, size = 10, lineheight = 1.1),
+        axis.text          = element_text(size = 10, color = "#36454f"),
+        axis.title         = element_text(size = 12, face = "italic"),
+        legend.position    = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank()
+      )
+    )
+}
